@@ -1,0 +1,49 @@
+MELHORIAS
+-Criar DTO para inserção com relacionamento
+-Repositorio Padrão
+-Implementar o padrão UnitOfWork
+
+
+DUVIDAS
+Nas instruções diz que "indFinalizado = true" 
+porem foi declarado como int declarei como bool
+
+
+*Ao excluir uma ocorrencia deve analisar se o pedido esta 
+concluido ou cancelado. DUVIDA: Depois de excluir uma 
+ocorrencia não pode ser cadastrada nenhuma outra ??
+
+Se o pedido deveria ser cadastrado sem ocorrencia
+
+
+REGRAS DE NEGOCIO
+
+Regra Pedido
+
+*Caso pedido finalizado com o tipo ocorrencia "Entregue com sucesso"
+o indConcluido = 1 (true) caso contratio indCancelado = 1 (true).
+
+
+Regra Ocorrencia
+
+*Não é possivel cadastrar 2 ou mais ocorrencias do mesmo tipo 
+entre 10 minutos no mesmo pedido.
+
+*Quando o pedido tiver a segunda ocorrencia ela sera do tipo 
+finalizadora, e devemos mudar o indFinalizadora = 1 (true).
+
+*Tipos Ocorrencia
+-Em rota de entrega (inicio do processo)
+-Entregue com sucesso (entrega)
+-Cliente ausente (entrega)
+-Avaria no produto (entrega)
+
+
+
+select * from Ocorrencia
+
+select * from pedido
+
+--insert into Ocorrencia values ('teste', GETDATE(), '', 1)
+
+--insert into pedido values (1, getdate(), 'false', 'false')
