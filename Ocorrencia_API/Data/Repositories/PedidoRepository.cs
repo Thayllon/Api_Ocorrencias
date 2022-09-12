@@ -3,7 +3,6 @@ using Ocorrencia_API.Data.Context;
 using Ocorrencia_API.Domain.Interfaces;
 using Ocorrencia_API.Domain.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ocorrencia_API.Data.Repositories
@@ -19,13 +18,12 @@ namespace Ocorrencia_API.Data.Repositories
 
         public async Task<IEnumerable<Pedido>> Get()
         {
-            return await _context.Pedido.Include(x => x.Ocorrencia).ToListAsync();
-            //return await _context.Pedido.ToListAsync();
+            return await _context.Pedido.Include(x => x.Ocorrencias).ToListAsync();
         }
 
         public async Task<Pedido> Get(int id)
         {
-            return await _context.Pedido.FindAsync(id);
+            return await _context.Pedido.Include(x => x.Ocorrencias).FirstOrDefaultAsync(i => i.IdPedido == id);
         }
 
         public async Task<Pedido> Create(Pedido pedido)

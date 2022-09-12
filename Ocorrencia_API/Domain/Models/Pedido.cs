@@ -9,19 +9,16 @@ namespace Ocorrencia_API.Domain.Models
         /// <summary>
         ///     
         /// </summary>
-        [Key]
         public int IdPedido { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         public int NumeroPedido { get; set; }
 
         /// <summary>
         /// 
         /// </summary>
-        [Required]
         public DateTime HoraPedido { get; set; }
 
         /// <summary>
@@ -37,6 +34,6 @@ namespace Ocorrencia_API.Domain.Models
         /// <summary>
         /// 
         /// </summary>
-        public List<Ocorrencia> Ocorrencia { get; set; }
+        public List<Ocorrencia> Ocorrencias { get; set; }
     }
 }

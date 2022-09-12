@@ -3,7 +3,6 @@ using Ocorrencia_API.Data.Context;
 using Ocorrencia_API.Domain.Interfaces;
 using Ocorrencia_API.Domain.Models;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Ocorrencia_API.Data.Repositories
@@ -24,17 +23,25 @@ namespace Ocorrencia_API.Data.Repositories
 
         public async Task<Ocorrencia> Get(int id)
         {
-            //return await _context.Ocorrencia.Where(x => x.Pedido.IdPedido == id).ToListAsync();
             return await _context.Ocorrencia.FindAsync(id);
         }
 
         public async Task<Ocorrencia> Create(Ocorrencia ocorrencia)
         {
-            _context.Ocorrencia.Add(ocorrencia);
+            var idValid = await _context.Pedido.FirstOrDefaultAsync(i => i.IdPedido == ocorrencia.PedidoId);
 
-            await _context.SaveChangesAsync();
+            if (idValid != null)
+            {
+                _context.Ocorrencia.Add(ocorrencia);
 
-            return ocorrencia;
+                await _context.SaveChangesAsync();
+
+                return ocorrencia;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public async Task Update(Ocorrencia ocorrencia)

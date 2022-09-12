@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Ocorrencia_API.Domain.DTO;
 using Ocorrencia_API.Domain.Interfaces;
 using Ocorrencia_API.Domain.Models;
@@ -12,49 +13,78 @@ namespace Ocorrencia_API.Controllers
     public class OcorrenciaController : ControllerBase
     {
         private readonly IOcorrenciaRepository _ocorrenciaRepository;
+        private readonly IPedidoRepository _pedidoRepository;
+        private readonly IMapper _mapper;
 
-        public OcorrenciaController(IOcorrenciaRepository ocorrenciaRepository)
+        public OcorrenciaController(IOcorrenciaRepository ocorrenciaRepository, IPedidoRepository pedidoRepository, IMapper mapper)
         {
             _ocorrenciaRepository = ocorrenciaRepository;
+            _pedidoRepository = pedidoRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Ocorrencia>> GetOcorrencia()
+        public async Task<IEnumerable<OcorrenciaDTO>> GetOcorrencia()
         {
-            return await _ocorrenciaRepository.Get();
+            var ocorrencia = await _ocorrenciaRepository.Get();
+
+            var ocorrenciaDTO = _mapper.Map<List<OcorrenciaDTO>>(ocorrencia);
+
+            return ocorrenciaDTO;
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ocorrencia>> GetOneOcorrencia(int id)
+        public async Task<ActionResult<OcorrenciaDTO>> GetOneOcorrencia(int id)
         {
-            return await _ocorrenciaRepository.Get(id);
-        }
+            var ocorrencia = await _ocorrenciaRepository.Get(id);
 
-        [HttpPost]
-        public async Task<ActionResult<Ocorrencia>> PostOcorrencia([FromBody] Ocorrencia ocorrencia)
-        {
-            var data = await _ocorrenciaRepository.Create(ocorrencia);
-
-            return CreatedAtAction(nameof(GetOcorrencia), new { id = data.IdOcorrencia }, data);
-        }
-
-        [HttpPut]
-        public async Task<ActionResult> PutPedido(int id, [FromBody] Ocorrencia ocorrencia)
-        {
-            if (id != ocorrencia.IdOcorrencia)
+            if (ocorrencia != null)
             {
-                return BadRequest();
+                var ocorrenciaDTO = _mapper.Map<OcorrenciaDTO>(ocorrencia);
+
+                return ocorrenciaDTO;
             }
             else
             {
-                await _ocorrenciaRepository.Update(ocorrencia);
-                return NoContent();
+                return BadRequest();
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Ocorrencia>> PostOcorrencia([FromBody] OcorrenciaDTO ocorrenciaDTO)
+        {
+            var ocorrencia = _mapper.Map<Ocorrencia>(ocorrenciaDTO);
+
+            var data = await _ocorrenciaRepository.Create(ocorrencia);
+
+            if (data != null)
+            {
+                return CreatedAtAction(nameof(GetOcorrencia), new { id = data.IdOcorrencia }, data);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> PutOcorrencia(int id, [FromBody] OcorrenciaDTO ocorrenciaDTO)
+        {
+            if (id != ocorrenciaDTO.IdOcorrencia)
+            {
+                return BadRequest();
+            }
+
+            var ocorrencia = _mapper.Map<Ocorrencia>(ocorrenciaDTO);
+
+            await _ocorrenciaRepository.Update(ocorrencia);
+
+            return NoContent();
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePedido(int id)
+        public async Task<ActionResult> DeleteOcorrencia(int id)
         {
             var data = await _ocorrenciaRepository.Get(id);
 

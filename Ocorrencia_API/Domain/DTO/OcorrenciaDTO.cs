@@ -1,11 +1,9 @@
-﻿using Ocorrencia_API.Domain.Models;
-using System;
+﻿using System;
 
 namespace Ocorrencia_API.Domain.DTO
 {
     public class OcorrenciaDTO
     {
-  
         public int IdOcorrencia { get; set; }
     
         public string TipoOcorrencia { get; set; }
@@ -14,8 +12,6 @@ namespace Ocorrencia_API.Domain.DTO
       
         public bool IndFinalizadora { get; set; }
 
-        public Pedido Pedido { get; set; }
-
-        public int Idpedido { get; set; }
+        public int PedidoId { get; set; }
     }
 }

@@ -12,5 +12,10 @@ namespace Ocorrencia_API.Data.Context
 
         public DbSet<Ocorrencia> Ocorrencia { get; set; }
         public DbSet<Pedido> Pedido { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        }
     }
 }

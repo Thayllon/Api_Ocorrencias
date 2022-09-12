@@ -8,24 +8,24 @@ namespace Ocorrencia_API.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<Pedido> builder)
         {
-            //builder.ToTable("Pedido");
+            builder.ToTable("Pedido");
 
-            //builder.HasKey(p => p.IdPedido);
+            builder.HasKey(p => p.IdPedido);
 
-            //builder.Property(p => p.NumeroPedido)
-            //    .IsRequired()
-            //    .HasColumnType("int");
+            builder.Property(p => p.NumeroPedido)
+                .IsRequired()
+                .HasColumnType("int");
 
-            //builder.Property(p => p.HoraPedido)
-            //    .IsRequired()
-            //    .HasColumnType("datetime");
+            builder.Property(p => p.HoraPedido)
+                .IsRequired()
+                .HasColumnType("datetime");
 
-            //builder.Property(p => p.IndCancelado);
+            builder.Property(p => p.IndCancelado);
 
-            //builder.Property(p => p.IndConcluido);
+            builder.Property(p => p.IndConcluido);
 
-            //builder.HasMany(p => p.Ocorrencia).WithOne(p => p.Pedido).HasForeignKey(p => p.Idpedido).OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(p => p.Ocorrencias).WithOne(p => p.Pedido).OnDelete(DeleteBehavior.Restrict);
 
         }
     }
-}
+} 
